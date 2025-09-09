@@ -44,6 +44,17 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
+
+            //設定ファイルがあるか確認
+            if (!File.Exists("./sys_settings.csv"))
+            {
+                //なければ新規作成
+                using (StreamWriter writer = new StreamWriter("./sys_settings.csv", false, Encoding.UTF8))
+                {
+                    writer.WriteLine("COM1");   //COMポート名
+                }
+            }
+
             //システム設定ファイルをロード
             using (StreamReader reader = new StreamReader("./sys_settings.csv", Encoding.UTF8))
             {
