@@ -6,9 +6,12 @@
 *.tmp
     
 # Build outputs
-[Dd]ebug/
-[Rr]elease/
-bin/
+#[Dd]ebug/
+#[Rr]elease/
+bin/debug/*
+!bin/debug/DevProfiles
+bin/release/*
+!bin/release/DevProfiles
 obj/
 
 # Packages
