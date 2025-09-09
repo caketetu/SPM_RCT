@@ -1,0 +1,20 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.log
+*.tmp
+    
+# Build outputs
+[Dd]ebug/
+[Rr]elease/
+bin/
+obj/
+
+# Packages
+packages/
+    
+# Executables and libraries
+*.exe
+*.dll
+*.pdb
