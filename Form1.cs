@@ -19,8 +19,10 @@ using static StandaloneFunctions.StandaloneFuncs;
 
 namespace WindowsFormsApp1
 {
+
     public partial class Form1 : Form
     {
+        //private string PrivateStringProperty { get; set; }
 
         StandaloneFunctions.StandaloneFuncs SF = new StandaloneFunctions.StandaloneFuncs();
         MD.MyModbusFuncs MD = new MD.MyModbusFuncs();
@@ -58,6 +60,7 @@ namespace WindowsFormsApp1
                 using (StreamWriter writer = new StreamWriter("./sys_settings.csv", false, Encoding.UTF8))
                 {
                     writer.WriteLine("COM1");   //COMポート名
+                    writer.WriteLine("0");   //デバイスID
                 }
             }
 
@@ -65,7 +68,18 @@ namespace WindowsFormsApp1
             using (StreamReader reader = new StreamReader("./sys_settings.csv", Encoding.UTF8))
             {
                 //string line;
-                TB_Com.Text = reader.ReadLine();        //一行目、COMポート名読み出し
+                TB_Com.Text = reader.ReadLine();        //1行目、COMポート名読み出し
+                TB_DevID.Text = reader.ReadLine();        //2行目、デバイスID
+            }
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //なければ新規作成
+            using (StreamWriter writer = new StreamWriter("./sys_settings.csv", false, Encoding.UTF8))
+            {
+                writer.WriteLine(TB_Com.Text);   //COMポート名
+                writer.WriteLine(TB_DevID.Text);//デバイスID
             }
         }
 
@@ -303,20 +317,27 @@ namespace WindowsFormsApp1
 
         private void B_DevIDSerach_Click(object sender, EventArgs e)
         {
+            Form2 form2 = new Form2();
+            form2.Show();
             if (serialPort1.IsOpen)
             {
-                string s = "Find ID:";
                 for (int i=1; i<254; i++)
                 {
                     MD.sModbusRegs r_flame = MD.MyModbusReadInputRegisters(
                         serialPort1, (byte)i, 0, 1);
                     if (r_flame.status == 0)
                     {
-                        s += i.ToString() + ",";
+                        DataClass.StringValue += "ID:" + i.ToString() + "...Detected!!\r\n";
                     }
+                    else
+                    {
+                        DataClass.StringValue += "ID:" + i.ToString() + " ...\r\n";
+                    }
+
+                    form2.RefreshData();
+                    form2.Refresh();
                     Thread.Sleep(30);
                 }
-                MessageBox.Show(s);
             }
         }
 
@@ -409,6 +430,8 @@ namespace WindowsFormsApp1
 
         private void B_LoadInputRegs_Click(object sender, EventArgs e)
         {
+            Form2 form2 = new Form2();
+            form2.Show();
             for (int i = 0; i < input_regs.Length; i++)
             {
                 MD.sModbusRegs r_flame = MD.MyModbusReadInputRegisters(
@@ -418,6 +441,10 @@ namespace WindowsFormsApp1
                     input_regs[i].value = r_flame.data[0];
                     input_regs[i].rewrite = false;
                     Thread.Sleep(100);
+                    DataClass.StringValue += "Read Input Regs " + i.ToString()
+                                            + "  " + input_regs[i].value.ToString() + "\r\n";
+                    form2.RefreshData();
+                    form2.Refresh();
                 }
                 else
                 {
@@ -429,8 +456,6 @@ namespace WindowsFormsApp1
 
         private void B_CycRegs1_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
-            form2.ShowDialog();
         }
     }
 }

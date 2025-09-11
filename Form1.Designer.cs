@@ -57,16 +57,16 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.CB_CycFuncName = new System.Windows.Forms.ComboBox();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_InputRegs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_HoldingRegs)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // B_Serial
@@ -328,14 +328,13 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // CB_CycFuncName
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 51);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 21;
-            this.dataGridView1.Size = new System.Drawing.Size(335, 395);
-            this.dataGridView1.TabIndex = 0;
+            this.CB_CycFuncName.FormattingEnabled = true;
+            this.CB_CycFuncName.Location = new System.Drawing.Point(26, 16);
+            this.CB_CycFuncName.Name = "CB_CycFuncName";
+            this.CB_CycFuncName.Size = new System.Drawing.Size(246, 20);
+            this.CB_CycFuncName.TabIndex = 2;
             // 
             // dataGridView2
             // 
@@ -346,13 +345,14 @@
             this.dataGridView2.Size = new System.Drawing.Size(324, 395);
             this.dataGridView2.TabIndex = 1;
             // 
-            // CB_CycFuncName
+            // dataGridView1
             // 
-            this.CB_CycFuncName.FormattingEnabled = true;
-            this.CB_CycFuncName.Location = new System.Drawing.Point(26, 16);
-            this.CB_CycFuncName.Name = "CB_CycFuncName";
-            this.CB_CycFuncName.Size = new System.Drawing.Size(246, 20);
-            this.CB_CycFuncName.TabIndex = 2;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(6, 51);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 21;
+            this.dataGridView1.Size = new System.Drawing.Size(335, 395);
+            this.dataGridView1.TabIndex = 0;
             // 
             // Form1
             // 
@@ -377,14 +377,15 @@
             this.Controls.Add(this.B_Serial);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.DGV_InputRegs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_HoldingRegs)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
