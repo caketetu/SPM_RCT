@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MD;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,6 +18,7 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
             DataClass.StringValue = "";
+            
         }
 
         public void RefreshData()

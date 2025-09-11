@@ -41,7 +41,7 @@
             this.L_DevVersion = new System.Windows.Forms.Label();
             this.DGV_InputRegs = new System.Windows.Forms.DataGridView();
             this.DGV_HoldingRegs = new System.Windows.Forms.DataGridView();
-            this.B_SaveHoldingRegs = new System.Windows.Forms.Button();
+            this.B_AllWriteHoldingRegs = new System.Windows.Forms.Button();
             this.B_LoadHoldingRegs = new System.Windows.Forms.Button();
             this.B_LoadInputRegs = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -58,15 +58,15 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.CB_CycFuncName = new System.Windows.Forms.ComboBox();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.DGV_CyclicFuncTx = new System.Windows.Forms.DataGridView();
+            this.DGV_CyclicFuncRx = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_InputRegs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_HoldingRegs)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_CyclicFuncTx)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_CyclicFuncRx)).BeginInit();
             this.SuspendLayout();
             // 
             // B_Serial
@@ -173,19 +173,19 @@
             this.DGV_HoldingRegs.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_HoldingRegs_CellContentClick);
             this.DGV_HoldingRegs.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_HoldingRegs_CellValueChanged);
             // 
-            // B_SaveHoldingRegs
+            // B_AllWriteHoldingRegs
             // 
-            this.B_SaveHoldingRegs.Location = new System.Drawing.Point(770, 686);
-            this.B_SaveHoldingRegs.Name = "B_SaveHoldingRegs";
-            this.B_SaveHoldingRegs.Size = new System.Drawing.Size(113, 38);
-            this.B_SaveHoldingRegs.TabIndex = 14;
-            this.B_SaveHoldingRegs.Text = "SaveHoldingRegs";
-            this.B_SaveHoldingRegs.UseVisualStyleBackColor = true;
-            this.B_SaveHoldingRegs.Click += new System.EventHandler(this.B_SaveHoldingRegs_Click);
+            this.B_AllWriteHoldingRegs.Location = new System.Drawing.Point(770, 683);
+            this.B_AllWriteHoldingRegs.Name = "B_AllWriteHoldingRegs";
+            this.B_AllWriteHoldingRegs.Size = new System.Drawing.Size(113, 38);
+            this.B_AllWriteHoldingRegs.TabIndex = 14;
+            this.B_AllWriteHoldingRegs.Text = "All Write";
+            this.B_AllWriteHoldingRegs.UseVisualStyleBackColor = true;
+            this.B_AllWriteHoldingRegs.Click += new System.EventHandler(this.B_SaveHoldingRegs_Click);
             // 
             // B_LoadHoldingRegs
             // 
-            this.B_LoadHoldingRegs.Location = new System.Drawing.Point(651, 686);
+            this.B_LoadHoldingRegs.Location = new System.Drawing.Point(631, 685);
             this.B_LoadHoldingRegs.Name = "B_LoadHoldingRegs";
             this.B_LoadHoldingRegs.Size = new System.Drawing.Size(113, 36);
             this.B_LoadHoldingRegs.TabIndex = 15;
@@ -304,7 +304,7 @@
             this.tabPage1.Controls.Add(this.DGV_InputRegs);
             this.tabPage1.Controls.Add(this.DGV_HoldingRegs);
             this.tabPage1.Controls.Add(this.label5);
-            this.tabPage1.Controls.Add(this.B_SaveHoldingRegs);
+            this.tabPage1.Controls.Add(this.B_AllWriteHoldingRegs);
             this.tabPage1.Controls.Add(this.B_LoadHoldingRegs);
             this.tabPage1.Controls.Add(this.B_LoadInputRegs);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -318,8 +318,8 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.CB_CycFuncName);
-            this.tabPage2.Controls.Add(this.dataGridView2);
-            this.tabPage2.Controls.Add(this.dataGridView1);
+            this.tabPage2.Controls.Add(this.DGV_CyclicFuncTx);
+            this.tabPage2.Controls.Add(this.DGV_CyclicFuncRx);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -335,24 +335,25 @@
             this.CB_CycFuncName.Name = "CB_CycFuncName";
             this.CB_CycFuncName.Size = new System.Drawing.Size(246, 20);
             this.CB_CycFuncName.TabIndex = 2;
+            this.CB_CycFuncName.SelectionChangeCommitted += new System.EventHandler(this.CB_CycFuncName_SelectionChangeCommitted);
             // 
-            // dataGridView2
+            // DGV_CyclicFuncTx
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(381, 51);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.RowTemplate.Height = 21;
-            this.dataGridView2.Size = new System.Drawing.Size(324, 395);
-            this.dataGridView2.TabIndex = 1;
+            this.DGV_CyclicFuncTx.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGV_CyclicFuncTx.Location = new System.Drawing.Point(381, 51);
+            this.DGV_CyclicFuncTx.Name = "DGV_CyclicFuncTx";
+            this.DGV_CyclicFuncTx.RowTemplate.Height = 21;
+            this.DGV_CyclicFuncTx.Size = new System.Drawing.Size(324, 395);
+            this.DGV_CyclicFuncTx.TabIndex = 1;
             // 
-            // dataGridView1
+            // DGV_CyclicFuncRx
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 51);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 21;
-            this.dataGridView1.Size = new System.Drawing.Size(335, 395);
-            this.dataGridView1.TabIndex = 0;
+            this.DGV_CyclicFuncRx.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGV_CyclicFuncRx.Location = new System.Drawing.Point(6, 51);
+            this.DGV_CyclicFuncRx.Name = "DGV_CyclicFuncRx";
+            this.DGV_CyclicFuncRx.RowTemplate.Height = 21;
+            this.DGV_CyclicFuncRx.Size = new System.Drawing.Size(335, 395);
+            this.DGV_CyclicFuncRx.TabIndex = 0;
             // 
             // Form1
             // 
@@ -384,8 +385,8 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_CyclicFuncTx)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_CyclicFuncRx)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -405,7 +406,7 @@
         private System.Windows.Forms.Label L_DevVersion;
         private System.Windows.Forms.DataGridView DGV_InputRegs;
         private System.Windows.Forms.DataGridView DGV_HoldingRegs;
-        private System.Windows.Forms.Button B_SaveHoldingRegs;
+        private System.Windows.Forms.Button B_AllWriteHoldingRegs;
         private System.Windows.Forms.Button B_LoadHoldingRegs;
         private System.Windows.Forms.Button B_LoadInputRegs;
         private System.Windows.Forms.Label label4;
@@ -421,8 +422,8 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView DGV_CyclicFuncTx;
+        private System.Windows.Forms.DataGridView DGV_CyclicFuncRx;
         private System.Windows.Forms.ComboBox CB_CycFuncName;
     }
 }

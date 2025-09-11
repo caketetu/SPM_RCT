@@ -46,7 +46,6 @@ namespace WindowsFormsApp1
 
         sRegister[] input_regs;
         sRegister[] holding_regs;
-
         sCyclicFunc[] cyclic_funcs = new sCyclicFunc[5];
 
         public Form1()
@@ -333,7 +332,10 @@ namespace WindowsFormsApp1
                     {
                         DataClass.StringValue += "ID:" + i.ToString() + " ...\r\n";
                     }
-
+                    if (i == 254-1)
+                    {
+                        DataClass.StringValue += "___end ID Search\r\n";
+                    }
                     form2.RefreshData();
                     form2.Refresh();
                     Thread.Sleep(30);
@@ -401,15 +403,43 @@ namespace WindowsFormsApp1
 
         private void B_SaveHoldingRegs_Click(object sender, EventArgs e)
         {
-            for(int i=0; i<holding_regs.Length;i++)
+            Form2 form2 = new Form2();
+            form2.Show();
+            for (int i=0; i<holding_regs.Length;i++)
             {
-                holding_regs[i].rewrite = false;
+                MD.sModbusRegs r_flame = MD.MyModbusPresetSingleRegisters(
+                                            serialPort1, 48, (UInt16)i, holding_regs[i].value);
+
+                if (r_flame.status == 0)
+                {
+                    holding_regs[i].value = r_flame.data[0];
+                    holding_regs[i].rewrite = false;
+                    Thread.Sleep(30);
+                    DataClass.StringValue += "Write Holding Regs " + i.ToString()
+                                            + "  " + holding_regs[i].value.ToString() + "\r\n";
+
+                    if (i == holding_regs.Length - 1)
+                    {
+                        DataClass.StringValue += "___end Write Holding Registers\r\n";
+                    }
+                    form2.RefreshData();
+                    form2.Refresh();
+                }
+                else
+                {
+                    DataClass.StringValue += "Write Holding Regs " + i.ToString() + " Error!!\r\n";
+                    form2.RefreshData();
+                    form2.Refresh();
+                    break;
+                }
             }
             reload_holding_regs();
         }
 
         private void B_LoadHoldingRegs_Click(object sender, EventArgs e)
         {
+            Form2 form2 = new Form2();
+            form2.Show();
             for (int i = 0; i < holding_regs.Length; i++)
             {
                 MD.sModbusRegs r_flame = MD.MyModbusReadHoldingRegisters(
@@ -418,10 +448,22 @@ namespace WindowsFormsApp1
                 {
                     holding_regs[i].value = r_flame.data[0];
                     holding_regs[i].rewrite = false;
-                    Thread.Sleep(100);
+                    Thread.Sleep(30);
+                    DataClass.StringValue += "Read Holding Regs " + i.ToString()
+                                            + "  " + holding_regs[i].value.ToString() + "\r\n";
+
+                    if (i == holding_regs.Length - 1)
+                    {
+                        DataClass.StringValue += "___end Load Holding Registers\r\n";
+                    }
+                    form2.RefreshData();
+                    form2.Refresh();
                 }
                 else
                 {
+                    DataClass.StringValue += "Read Holding Regs " + i.ToString() + " Error!!\r\n";
+                    form2.RefreshData();
+                    form2.Refresh();
                     break;
                 }
             }
@@ -440,14 +482,22 @@ namespace WindowsFormsApp1
                 {
                     input_regs[i].value = r_flame.data[0];
                     input_regs[i].rewrite = false;
-                    Thread.Sleep(100);
+                    Thread.Sleep(30);
                     DataClass.StringValue += "Read Input Regs " + i.ToString()
                                             + "  " + input_regs[i].value.ToString() + "\r\n";
+
+                    if (i == input_regs.Length - 1)
+                    {
+                        DataClass.StringValue += "___end Load Input Registers\r\n";
+                    }
                     form2.RefreshData();
                     form2.Refresh();
                 }
                 else
                 {
+                    DataClass.StringValue += "Read Input Regs " + i.ToString() + " Error!!\r\n";
+                    form2.RefreshData();
+                    form2.Refresh();
                     break;
                 }
             }
@@ -456,6 +506,40 @@ namespace WindowsFormsApp1
 
         private void B_CycRegs1_Click(object sender, EventArgs e)
         {
+        }
+
+        private void CB_CycFuncName_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            int func_no = -1;
+            String func_name = (String)CB_CycFuncName.Items[CB_CycFuncName.SelectedIndex];
+            for (int i = 0; i < cyclic_funcs.Length; i++)
+            {
+                if (cyclic_funcs[i].name == func_name)
+                {
+                    func_no = i;
+                }
+            }
+            DGV_CyclicFuncRx.Rows.Clear();
+            DGV_CyclicFuncRx.Columns.Clear();
+            DGV_CyclicFuncRx.ColumnCount = 3;
+            foreach (sRegister r in cyclic_funcs[func_no].rx)
+            {
+                if (r.name != null)
+                {
+                    DGV_CyclicFuncRx.Rows.Add(r.address, r.name, r.value);
+                }
+            }
+
+            DGV_CyclicFuncTx.Rows.Clear();
+            DGV_CyclicFuncTx.Columns.Clear();
+            DGV_CyclicFuncTx.ColumnCount = 3;
+            foreach (sRegister r in cyclic_funcs[func_no].tx)
+            {
+                if (r.name != null)
+                {
+                    DGV_CyclicFuncTx.Rows.Add(r.address, r.name, r.value);
+                }
+            }
         }
     }
 }
