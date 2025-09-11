@@ -54,8 +54,19 @@
             this.labelee = new System.Windows.Forms.Label();
             this.L_Description = new System.Windows.Forms.Label();
             this.B_CycRegs1 = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.CB_CycFuncName = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_InputRegs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_HoldingRegs)).BeginInit();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // B_Serial
@@ -145,7 +156,7 @@
             // DGV_InputRegs
             // 
             this.DGV_InputRegs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV_InputRegs.Location = new System.Drawing.Point(12, 32);
+            this.DGV_InputRegs.Location = new System.Drawing.Point(8, 28);
             this.DGV_InputRegs.Name = "DGV_InputRegs";
             this.DGV_InputRegs.RowTemplate.Height = 21;
             this.DGV_InputRegs.Size = new System.Drawing.Size(378, 653);
@@ -154,7 +165,7 @@
             // DGV_HoldingRegs
             // 
             this.DGV_HoldingRegs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV_HoldingRegs.Location = new System.Drawing.Point(418, 32);
+            this.DGV_HoldingRegs.Location = new System.Drawing.Point(412, 28);
             this.DGV_HoldingRegs.Name = "DGV_HoldingRegs";
             this.DGV_HoldingRegs.RowTemplate.Height = 21;
             this.DGV_HoldingRegs.Size = new System.Drawing.Size(471, 651);
@@ -164,7 +175,7 @@
             // 
             // B_SaveHoldingRegs
             // 
-            this.B_SaveHoldingRegs.Location = new System.Drawing.Point(776, 691);
+            this.B_SaveHoldingRegs.Location = new System.Drawing.Point(770, 686);
             this.B_SaveHoldingRegs.Name = "B_SaveHoldingRegs";
             this.B_SaveHoldingRegs.Size = new System.Drawing.Size(113, 38);
             this.B_SaveHoldingRegs.TabIndex = 14;
@@ -174,7 +185,7 @@
             // 
             // B_LoadHoldingRegs
             // 
-            this.B_LoadHoldingRegs.Location = new System.Drawing.Point(657, 693);
+            this.B_LoadHoldingRegs.Location = new System.Drawing.Point(651, 686);
             this.B_LoadHoldingRegs.Name = "B_LoadHoldingRegs";
             this.B_LoadHoldingRegs.Size = new System.Drawing.Size(113, 36);
             this.B_LoadHoldingRegs.TabIndex = 15;
@@ -184,7 +195,7 @@
             // 
             // B_LoadInputRegs
             // 
-            this.B_LoadInputRegs.Location = new System.Drawing.Point(355, 689);
+            this.B_LoadInputRegs.Location = new System.Drawing.Point(273, 687);
             this.B_LoadInputRegs.Name = "B_LoadInputRegs";
             this.B_LoadInputRegs.Size = new System.Drawing.Size(113, 37);
             this.B_LoadInputRegs.TabIndex = 16;
@@ -195,7 +206,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 12);
+            this.label4.Location = new System.Drawing.Point(6, 10);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(83, 12);
             this.label4.TabIndex = 17;
@@ -204,7 +215,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(416, 12);
+            this.label5.Location = new System.Drawing.Point(410, 10);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(96, 12);
             this.label5.TabIndex = 18;
@@ -277,24 +288,84 @@
             this.B_CycRegs1.UseVisualStyleBackColor = true;
             this.B_CycRegs1.Click += new System.EventHandler(this.B_CycRegs1_Click);
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(12, 12);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1015, 763);
+            this.tabControl1.TabIndex = 25;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.label4);
+            this.tabPage1.Controls.Add(this.DGV_InputRegs);
+            this.tabPage1.Controls.Add(this.DGV_HoldingRegs);
+            this.tabPage1.Controls.Add(this.label5);
+            this.tabPage1.Controls.Add(this.B_SaveHoldingRegs);
+            this.tabPage1.Controls.Add(this.B_LoadHoldingRegs);
+            this.tabPage1.Controls.Add(this.B_LoadInputRegs);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(1007, 737);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.CB_CycFuncName);
+            this.tabPage2.Controls.Add(this.dataGridView2);
+            this.tabPage2.Controls.Add(this.dataGridView1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(1007, 737);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(6, 51);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 21;
+            this.dataGridView1.Size = new System.Drawing.Size(335, 395);
+            this.dataGridView1.TabIndex = 0;
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Location = new System.Drawing.Point(381, 51);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.RowTemplate.Height = 21;
+            this.dataGridView2.Size = new System.Drawing.Size(324, 395);
+            this.dataGridView2.TabIndex = 1;
+            // 
+            // CB_CycFuncName
+            // 
+            this.CB_CycFuncName.FormattingEnabled = true;
+            this.CB_CycFuncName.Location = new System.Drawing.Point(26, 16);
+            this.CB_CycFuncName.Name = "CB_CycFuncName";
+            this.CB_CycFuncName.Size = new System.Drawing.Size(246, 20);
+            this.CB_CycFuncName.TabIndex = 2;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 761);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.B_CycRegs1);
             this.Controls.Add(this.L_Description);
             this.Controls.Add(this.labelee);
             this.Controls.Add(this.B_LoadParams);
             this.Controls.Add(this.B_SaveParams);
             this.Controls.Add(this.B_FlashParams);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.B_LoadInputRegs);
-            this.Controls.Add(this.B_LoadHoldingRegs);
-            this.Controls.Add(this.B_SaveHoldingRegs);
-            this.Controls.Add(this.DGV_HoldingRegs);
-            this.Controls.Add(this.DGV_InputRegs);
             this.Controls.Add(this.L_DevVersion);
             this.Controls.Add(this.L_ModelNo);
             this.Controls.Add(this.label3);
@@ -308,6 +379,12 @@
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.DGV_InputRegs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_HoldingRegs)).EndInit();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -340,6 +417,12 @@
         private System.Windows.Forms.Label labelee;
         private System.Windows.Forms.Label L_Description;
         private System.Windows.Forms.Button B_CycRegs1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.ComboBox CB_CycFuncName;
     }
 }
 

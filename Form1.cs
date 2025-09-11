@@ -35,11 +35,17 @@ namespace WindowsFormsApp1
             public bool rewrite;
         };
 
+        public struct sCyclicFunc
+        {
+            public String name;
+            public sRegister[] tx;
+            public sRegister[] rx;
+        };
+
         sRegister[] input_regs;
         sRegister[] holding_regs;
 
-        sRegister[] cyclic_regs_tx1;
-        sRegister[] cyclic_regs_rx1;
+        sCyclicFunc[] cyclic_funcs = new sCyclicFunc[5];
 
         public Form1()
         {
@@ -93,6 +99,13 @@ namespace WindowsFormsApp1
                             L_ModelNo.Text = r_flame.data[0].ToString();
                             L_DevVersion.Text = r_flame.data[1].ToString().PadLeft(4, '0')
                                               + '_' + r_flame.data[2].ToString().PadLeft(4, '0');
+                            for (int i = 0; i < cyclic_funcs.Length; i++)
+                            {
+                                if (cyclic_funcs[i].name != null)
+                                {
+                                    CB_CycFuncName.Items.Add(cyclic_funcs[i].name);
+                                }
+                            }
                         }
                         else
                         {
@@ -114,6 +127,7 @@ namespace WindowsFormsApp1
 
         private void load_profile(String file)
         {
+            int cyclic_func_count = 0;
             StreamReader sr = new StreamReader(file);   //ファイルオープン
             String line = null; // ここで初期化
             //1行ずつ読み込み
@@ -174,6 +188,41 @@ namespace WindowsFormsApp1
                         holding_regs[hr.address] = hr;
                     }
                 }
+
+                if (sline[0].Contains("cyclic"))
+                {
+                    sCyclicFunc cf = new sCyclicFunc();
+                    cf.name = sline[1];
+                    int tx_max = int.Parse(sline[2]);
+                    cf.tx = new sRegister[tx_max];
+                    int rx_max = int.Parse(sline[3]);
+                    cf.rx = new sRegister[rx_max];
+                    while (line != null)
+                    {
+                        line = sr.ReadLine();
+                        sline = line.Split(',');
+                        if (sline[0].Contains("_cyclic")) break;
+                        sRegister cr = new sRegister();
+                        cr.address = int.Parse(sline[0]);
+                        cr.name = sline[1];
+                        cr.min = int.Parse(sline[2]);
+                        cr.max = int.Parse(sline[3]);
+                        cr.value = 0;
+                        cr.rewrite = true;
+                        if(sline[4] == "tx")
+                        {
+                            cf.tx[cr.address] = cr;
+                        }
+                        else
+                        {
+                            cf.rx[cr.address] = cr;
+                        }
+                    }
+                    //cyclic_funcsに登録
+                    cyclic_funcs[cyclic_func_count] = cf;
+                    cyclic_func_count++;
+                }
+
             }
             sr.Close();
         }
