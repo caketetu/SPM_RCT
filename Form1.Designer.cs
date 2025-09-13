@@ -53,16 +53,19 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.labelee = new System.Windows.Forms.Label();
             this.L_Description = new System.Windows.Forms.Label();
-            this.B_CycRegs1 = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.Tab_Ctrl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.CB_CycFuncName = new System.Windows.Forms.ComboBox();
             this.DGV_CyclicFuncTx = new System.Windows.Forms.DataGridView();
             this.DGV_CyclicFuncRx = new System.Windows.Forms.DataGridView();
+            this.B_CyclicTxWrite = new System.Windows.Forms.Button();
+            this.B_StartCyclic = new System.Windows.Forms.Button();
+            this.T_Cyclic = new System.Windows.Forms.Timer(this.components);
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_InputRegs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_HoldingRegs)).BeginInit();
-            this.tabControl1.SuspendLayout();
+            this.Tab_Ctrl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_CyclicFuncTx)).BeginInit();
@@ -175,9 +178,9 @@
             // 
             // B_AllWriteHoldingRegs
             // 
-            this.B_AllWriteHoldingRegs.Location = new System.Drawing.Point(770, 683);
+            this.B_AllWriteHoldingRegs.Location = new System.Drawing.Point(502, 685);
             this.B_AllWriteHoldingRegs.Name = "B_AllWriteHoldingRegs";
-            this.B_AllWriteHoldingRegs.Size = new System.Drawing.Size(113, 38);
+            this.B_AllWriteHoldingRegs.Size = new System.Drawing.Size(84, 28);
             this.B_AllWriteHoldingRegs.TabIndex = 14;
             this.B_AllWriteHoldingRegs.Text = "All Write";
             this.B_AllWriteHoldingRegs.UseVisualStyleBackColor = true;
@@ -185,21 +188,21 @@
             // 
             // B_LoadHoldingRegs
             // 
-            this.B_LoadHoldingRegs.Location = new System.Drawing.Point(631, 685);
+            this.B_LoadHoldingRegs.Location = new System.Drawing.Point(412, 685);
             this.B_LoadHoldingRegs.Name = "B_LoadHoldingRegs";
-            this.B_LoadHoldingRegs.Size = new System.Drawing.Size(113, 36);
+            this.B_LoadHoldingRegs.Size = new System.Drawing.Size(84, 28);
             this.B_LoadHoldingRegs.TabIndex = 15;
-            this.B_LoadHoldingRegs.Text = "LoadHoldingRegs";
+            this.B_LoadHoldingRegs.Text = "All Load";
             this.B_LoadHoldingRegs.UseVisualStyleBackColor = true;
             this.B_LoadHoldingRegs.Click += new System.EventHandler(this.B_LoadHoldingRegs_Click);
             // 
             // B_LoadInputRegs
             // 
-            this.B_LoadInputRegs.Location = new System.Drawing.Point(273, 687);
+            this.B_LoadInputRegs.Location = new System.Drawing.Point(302, 685);
             this.B_LoadInputRegs.Name = "B_LoadInputRegs";
-            this.B_LoadInputRegs.Size = new System.Drawing.Size(113, 37);
+            this.B_LoadInputRegs.Size = new System.Drawing.Size(84, 28);
             this.B_LoadInputRegs.TabIndex = 16;
-            this.B_LoadInputRegs.Text = "LoadInputRegs";
+            this.B_LoadInputRegs.Text = "All Load";
             this.B_LoadInputRegs.UseVisualStyleBackColor = true;
             this.B_LoadInputRegs.Click += new System.EventHandler(this.B_LoadInputRegs_Click);
             // 
@@ -223,18 +226,18 @@
             // 
             // B_FlashParams
             // 
-            this.B_FlashParams.Location = new System.Drawing.Point(1059, 689);
+            this.B_FlashParams.Location = new System.Drawing.Point(799, 685);
             this.B_FlashParams.Name = "B_FlashParams";
-            this.B_FlashParams.Size = new System.Drawing.Size(113, 38);
+            this.B_FlashParams.Size = new System.Drawing.Size(84, 28);
             this.B_FlashParams.TabIndex = 19;
             this.B_FlashParams.Text = "FlashParams";
             this.B_FlashParams.UseVisualStyleBackColor = true;
             // 
             // B_SaveParams
             // 
-            this.B_SaveParams.Location = new System.Drawing.Point(1059, 645);
+            this.B_SaveParams.Location = new System.Drawing.Point(709, 685);
             this.B_SaveParams.Name = "B_SaveParams";
-            this.B_SaveParams.Size = new System.Drawing.Size(113, 38);
+            this.B_SaveParams.Size = new System.Drawing.Size(84, 28);
             this.B_SaveParams.TabIndex = 20;
             this.B_SaveParams.Text = "Save Params";
             this.B_SaveParams.UseVisualStyleBackColor = true;
@@ -242,9 +245,9 @@
             // 
             // B_LoadParams
             // 
-            this.B_LoadParams.Location = new System.Drawing.Point(1059, 601);
+            this.B_LoadParams.Location = new System.Drawing.Point(619, 685);
             this.B_LoadParams.Name = "B_LoadParams";
-            this.B_LoadParams.Size = new System.Drawing.Size(113, 38);
+            this.B_LoadParams.Size = new System.Drawing.Size(84, 28);
             this.B_LoadParams.TabIndex = 21;
             this.B_LoadParams.Text = "Load Params";
             this.B_LoadParams.UseVisualStyleBackColor = true;
@@ -274,29 +277,21 @@
             this.L_Description.AutoSize = true;
             this.L_Description.Location = new System.Drawing.Point(1057, 235);
             this.L_Description.Name = "L_Description";
-            this.L_Description.Size = new System.Drawing.Size(35, 12);
+            this.L_Description.Size = new System.Drawing.Size(11, 12);
             this.L_Description.TabIndex = 23;
-            this.L_Description.Text = "00000";
+            this.L_Description.Text = "0";
             // 
-            // B_CycRegs1
+            // Tab_Ctrl
             // 
-            this.B_CycRegs1.Location = new System.Drawing.Point(1035, 270);
-            this.B_CycRegs1.Name = "B_CycRegs1";
-            this.B_CycRegs1.Size = new System.Drawing.Size(135, 38);
-            this.B_CycRegs1.TabIndex = 24;
-            this.B_CycRegs1.Text = "Cyclic Register 1";
-            this.B_CycRegs1.UseVisualStyleBackColor = true;
-            this.B_CycRegs1.Click += new System.EventHandler(this.B_CycRegs1_Click);
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1015, 763);
-            this.tabControl1.TabIndex = 25;
+            this.Tab_Ctrl.Controls.Add(this.tabPage1);
+            this.Tab_Ctrl.Controls.Add(this.tabPage2);
+            this.Tab_Ctrl.Enabled = false;
+            this.Tab_Ctrl.Location = new System.Drawing.Point(12, 12);
+            this.Tab_Ctrl.Name = "Tab_Ctrl";
+            this.Tab_Ctrl.SelectedIndex = 0;
+            this.Tab_Ctrl.Size = new System.Drawing.Size(1015, 763);
+            this.Tab_Ctrl.TabIndex = 25;
+            this.Tab_Ctrl.SelectedIndexChanged += new System.EventHandler(this.Tab_Ctrl_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -304,6 +299,9 @@
             this.tabPage1.Controls.Add(this.DGV_InputRegs);
             this.tabPage1.Controls.Add(this.DGV_HoldingRegs);
             this.tabPage1.Controls.Add(this.label5);
+            this.tabPage1.Controls.Add(this.B_FlashParams);
+            this.tabPage1.Controls.Add(this.B_SaveParams);
+            this.tabPage1.Controls.Add(this.B_LoadParams);
             this.tabPage1.Controls.Add(this.B_AllWriteHoldingRegs);
             this.tabPage1.Controls.Add(this.B_LoadHoldingRegs);
             this.tabPage1.Controls.Add(this.B_LoadInputRegs);
@@ -312,11 +310,13 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(1007, 737);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.Text = "All Registers";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.B_StartCyclic);
+            this.tabPage2.Controls.Add(this.B_CyclicTxWrite);
             this.tabPage2.Controls.Add(this.CB_CycFuncName);
             this.tabPage2.Controls.Add(this.DGV_CyclicFuncTx);
             this.tabPage2.Controls.Add(this.DGV_CyclicFuncRx);
@@ -325,7 +325,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(1007, 737);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "Cyclic Function";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // CB_CycFuncName
@@ -340,10 +340,10 @@
             // DGV_CyclicFuncTx
             // 
             this.DGV_CyclicFuncTx.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV_CyclicFuncTx.Location = new System.Drawing.Point(381, 51);
+            this.DGV_CyclicFuncTx.Location = new System.Drawing.Point(347, 51);
             this.DGV_CyclicFuncTx.Name = "DGV_CyclicFuncTx";
             this.DGV_CyclicFuncTx.RowTemplate.Height = 21;
-            this.DGV_CyclicFuncTx.Size = new System.Drawing.Size(324, 395);
+            this.DGV_CyclicFuncTx.Size = new System.Drawing.Size(419, 395);
             this.DGV_CyclicFuncTx.TabIndex = 1;
             // 
             // DGV_CyclicFuncRx
@@ -355,18 +355,47 @@
             this.DGV_CyclicFuncRx.Size = new System.Drawing.Size(335, 395);
             this.DGV_CyclicFuncRx.TabIndex = 0;
             // 
+            // B_CyclicTxWrite
+            // 
+            this.B_CyclicTxWrite.Location = new System.Drawing.Point(664, 452);
+            this.B_CyclicTxWrite.Name = "B_CyclicTxWrite";
+            this.B_CyclicTxWrite.Size = new System.Drawing.Size(102, 29);
+            this.B_CyclicTxWrite.TabIndex = 3;
+            this.B_CyclicTxWrite.Text = "All Write";
+            this.B_CyclicTxWrite.UseVisualStyleBackColor = true;
+            this.B_CyclicTxWrite.Click += new System.EventHandler(this.B_CyclicTxWrite_Click);
+            // 
+            // B_StartCyclic
+            // 
+            this.B_StartCyclic.Location = new System.Drawing.Point(278, 16);
+            this.B_StartCyclic.Name = "B_StartCyclic";
+            this.B_StartCyclic.Size = new System.Drawing.Size(103, 23);
+            this.B_StartCyclic.TabIndex = 4;
+            this.B_StartCyclic.Text = "Start Cyclic";
+            this.B_StartCyclic.UseVisualStyleBackColor = true;
+            this.B_StartCyclic.Click += new System.EventHandler(this.B_StartCyclic_Click);
+            // 
+            // T_Cyclic
+            // 
+            this.T_Cyclic.Tick += new System.EventHandler(this.T_Cyclic_Tick);
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(1029, 284);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(149, 465);
+            this.richTextBox1.TabIndex = 26;
+            this.richTextBox1.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 761);
-            this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.B_CycRegs1);
+            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.Tab_Ctrl);
             this.Controls.Add(this.L_Description);
             this.Controls.Add(this.labelee);
-            this.Controls.Add(this.B_LoadParams);
-            this.Controls.Add(this.B_SaveParams);
-            this.Controls.Add(this.B_FlashParams);
             this.Controls.Add(this.L_DevVersion);
             this.Controls.Add(this.L_ModelNo);
             this.Controls.Add(this.label3);
@@ -377,11 +406,11 @@
             this.Controls.Add(this.TB_Com);
             this.Controls.Add(this.B_Serial);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "SPM Register Custom Tool";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.DGV_InputRegs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_HoldingRegs)).EndInit();
-            this.tabControl1.ResumeLayout(false);
+            this.Tab_Ctrl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -418,13 +447,16 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Label labelee;
         private System.Windows.Forms.Label L_Description;
-        private System.Windows.Forms.Button B_CycRegs1;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl Tab_Ctrl;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.DataGridView DGV_CyclicFuncTx;
         private System.Windows.Forms.DataGridView DGV_CyclicFuncRx;
         private System.Windows.Forms.ComboBox CB_CycFuncName;
+        private System.Windows.Forms.Button B_CyclicTxWrite;
+        private System.Windows.Forms.Button B_StartCyclic;
+        private System.Windows.Forms.Timer T_Cyclic;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 

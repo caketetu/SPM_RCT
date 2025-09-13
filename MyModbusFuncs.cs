@@ -222,5 +222,48 @@ namespace MD
             }
             return modbus_data;
         }
+        //Cyclic Functions（65-69）
+        public sModbusRegs MyModbusCyclicFuncs(SerialPort ser, byte slave, int func_no, Int16[] values)
+        {
+            byte[] sd = new byte[256];
+            int sl = 0;
+            sd[sl++] = slave;
+            sd[sl++] = (byte)(func_no+65);
+            for (int i = 0; i < values.Length; i++)
+            {
+                sd[sl++] = (byte)(values[i] >> 8);
+                sd[sl++] = (byte)(values[i]);
+            }
+
+            UInt16 crc = SF.Calc_crc(sd, sl);
+            sd[sl++] = (byte)(crc);
+            sd[sl++] = (byte)(crc >> 8);
+            ser.Write(sd, 0, sl);
+            Thread.Sleep(30);
+            //受信
+            sModbusRegs modbus_data = new sModbusRegs();
+            modbus_data.status = -1;
+            if (ser.BytesToRead > 0)
+            {
+                int rlen = ser.BytesToRead;
+                byte[] rd = new byte[rlen];
+                ser.Read(rd, 0, rlen);
+                UInt16 crc_check = SF.convert_UInt16(rd[rlen - 1], rd[rlen - 2]);
+                if (crc_check != SF.Calc_crc(rd, rlen - 2))
+                {
+                    modbus_data.status = -1;
+                    return modbus_data;
+                }
+                modbus_data.len = (rlen-4)/2;
+                modbus_data.data = new Int16[modbus_data.len];
+                int trx = 2;
+                for (int i = 0; i < modbus_data.len; i++)
+                {
+                    modbus_data.data[i] = SF.convert_Int16(rd[trx++], rd[trx++]);
+                }
+                modbus_data.status = 0;
+            }
+            return modbus_data;
+        }
     }
 }

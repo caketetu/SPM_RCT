@@ -1,4 +1,5 @@
 ﻿//using MyServoTest;
+using MD;
 using MyServoTest;
 using System;
 using System.Collections.Generic;
@@ -22,10 +23,10 @@ namespace WindowsFormsApp1
 
     public partial class Form1 : Form
     {
-        //private string PrivateStringProperty { get; set; }
-
         StandaloneFunctions.StandaloneFuncs SF = new StandaloneFunctions.StandaloneFuncs();
         MD.MyModbusFuncs MD = new MD.MyModbusFuncs();
+
+        byte dev_id = 0;
 
         public struct sRegister
         {
@@ -47,6 +48,7 @@ namespace WindowsFormsApp1
         sRegister[] input_regs;
         sRegister[] holding_regs;
         sCyclicFunc[] cyclic_funcs = new sCyclicFunc[5];
+        int cfn = -1;
 
         public Form1()
         {
@@ -87,7 +89,7 @@ namespace WindowsFormsApp1
             if (serialPort1.IsOpen)
             {
                 //Open->Close処理
-                B_Serial.Text = "Disconnect";
+                Tab_Ctrl.Enabled = false;
                 B_Serial.ForeColor = Color.Black;
                 serialPort1.Close();
             }
@@ -99,8 +101,9 @@ namespace WindowsFormsApp1
                 //デバイス情報の読み出し
                 if (serialPort1.IsOpen)
                 {
+                    dev_id = Convert.ToByte(TB_DevID.Text);
                     MD.sModbusRegs r_flame = MD.MyModbusReadInputRegisters(
-                        serialPort1, 48, 0, 3);
+                        serialPort1, dev_id, 0, 3);
                     if (r_flame.status == 0)
                     {
                         String s = SF.serch_profile(r_flame.data[0], r_flame.data[1]);
@@ -112,6 +115,7 @@ namespace WindowsFormsApp1
                             L_ModelNo.Text = r_flame.data[0].ToString();
                             L_DevVersion.Text = r_flame.data[1].ToString().PadLeft(4, '0')
                                               + '_' + r_flame.data[2].ToString().PadLeft(4, '0');
+                            CB_CycFuncName.Items.Clear();
                             for (int i = 0; i < cyclic_funcs.Length; i++)
                             {
                                 if (cyclic_funcs[i].name != null)
@@ -119,10 +123,12 @@ namespace WindowsFormsApp1
                                     CB_CycFuncName.Items.Add(cyclic_funcs[i].name);
                                 }
                             }
+                            Tab_Ctrl.Enabled = true;
                         }
                         else
                         {
                             MessageBox.Show("Profile not found");
+                            serialPort1.Close();
                             return;
                         }
 
@@ -130,10 +136,14 @@ namespace WindowsFormsApp1
                     else
                     {
                         MessageBox.Show("Device not found");
+                        serialPort1.Close();
                         return;
                     }
-                    B_Serial.Text = "Connect";
                     B_Serial.ForeColor = Color.Red;
+                }
+                else
+                {
+                    MessageBox.Show("serial Port Error!!");
                 }
             }
         }
@@ -153,12 +163,6 @@ namespace WindowsFormsApp1
                     {
                         line = sr.ReadLine();
                         sline = line.Split(',');
-                        if (sline[0] == "regs_max")
-                        {
-                            int regs_max = int.Parse(sline[1]);
-                            input_regs = new sRegister[regs_max];
-                            holding_regs = new sRegister[regs_max];
-                        }
                         if (sline[0] == "description")
                         {
                             L_Description.Text = sline[1];
@@ -168,6 +172,7 @@ namespace WindowsFormsApp1
 
                 if (sline[0] == "input_regs")
                 {
+                    input_regs = new sRegister[int.Parse(sline[1])];
                     while (line != null)
                     {
                         line = sr.ReadLine();
@@ -186,6 +191,7 @@ namespace WindowsFormsApp1
 
                 if (sline[0] == "holding_regs")
                 {
+                    holding_regs = new sRegister[int.Parse(sline[1])];
                     while (line != null)
                     {
                         line = sr.ReadLine();
@@ -300,7 +306,7 @@ namespace WindowsFormsApp1
                 Int16 val = Convert.ToInt16(s);
 
                 MD.sModbusRegs r_flame = MD.MyModbusPresetSingleRegisters(
-                                            serialPort1, 48, (UInt16)addr, (Int16)val);
+                                            serialPort1, dev_id, (UInt16)addr, (Int16)val);
                 if(r_flame.status == 0)
                 {
                     holding_regs[addr].value = r_flame.data[0];
@@ -408,7 +414,7 @@ namespace WindowsFormsApp1
             for (int i=0; i<holding_regs.Length;i++)
             {
                 MD.sModbusRegs r_flame = MD.MyModbusPresetSingleRegisters(
-                                            serialPort1, 48, (UInt16)i, holding_regs[i].value);
+                                            serialPort1, dev_id, (UInt16)i, holding_regs[i].value);
 
                 if (r_flame.status == 0)
                 {
@@ -443,7 +449,7 @@ namespace WindowsFormsApp1
             for (int i = 0; i < holding_regs.Length; i++)
             {
                 MD.sModbusRegs r_flame = MD.MyModbusReadHoldingRegisters(
-                                            serialPort1, 48, (UInt16)i, 1);
+                                            serialPort1, dev_id, (UInt16)i, 1);
                 if(r_flame.status == 0)
                 {
                     holding_regs[i].value = r_flame.data[0];
@@ -477,7 +483,7 @@ namespace WindowsFormsApp1
             for (int i = 0; i < input_regs.Length; i++)
             {
                 MD.sModbusRegs r_flame = MD.MyModbusReadInputRegisters(
-                                            serialPort1, 48, (UInt16)i, 1);
+                                            serialPort1, dev_id, (UInt16)i, 1);
                 if (r_flame.status == 0)
                 {
                     input_regs[i].value = r_flame.data[0];
@@ -510,19 +516,19 @@ namespace WindowsFormsApp1
 
         private void CB_CycFuncName_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            int func_no = -1;
+            cfn = -1;
             String func_name = (String)CB_CycFuncName.Items[CB_CycFuncName.SelectedIndex];
             for (int i = 0; i < cyclic_funcs.Length; i++)
             {
                 if (cyclic_funcs[i].name == func_name)
                 {
-                    func_no = i;
+                    cfn = i;
                 }
             }
             DGV_CyclicFuncRx.Rows.Clear();
             DGV_CyclicFuncRx.Columns.Clear();
             DGV_CyclicFuncRx.ColumnCount = 3;
-            foreach (sRegister r in cyclic_funcs[func_no].rx)
+            foreach (sRegister r in cyclic_funcs[cfn].rx)
             {
                 if (r.name != null)
                 {
@@ -532,12 +538,81 @@ namespace WindowsFormsApp1
 
             DGV_CyclicFuncTx.Rows.Clear();
             DGV_CyclicFuncTx.Columns.Clear();
-            DGV_CyclicFuncTx.ColumnCount = 3;
-            foreach (sRegister r in cyclic_funcs[func_no].tx)
+            DGV_CyclicFuncTx.ColumnCount = 4;
+            foreach (sRegister r in cyclic_funcs[cfn].tx)
             {
                 if (r.name != null)
                 {
-                    DGV_CyclicFuncTx.Rows.Add(r.address, r.name, r.value);
+                    DGV_CyclicFuncTx.Rows.Add(r.address, r.name, r.value, 0);
+                }
+            }
+        }
+
+        private void B_CyclicTxWrite_Click(object sender, EventArgs e)
+        {
+            //DGV_CyclicFuncTxの4列の内容を３列に書き写す
+            for(int i=0;i<DGV_CyclicFuncTx.Rows.Count-1; i++)
+            {
+                String s = DGV_CyclicFuncTx.Rows[i].Cells[3].Value.ToString();
+                Int16 val = Convert.ToInt16(s);
+                DGV_CyclicFuncTx.Rows[i].Cells[2].Value = s;
+                cyclic_funcs[cfn].tx[i].value = val;
+            }
+        }
+
+        private void B_StartCyclic_Click(object sender, EventArgs e)
+        {
+            if (!T_Cyclic.Enabled)
+            {
+                if (serialPort1.IsOpen)
+                {
+                    T_Cyclic.Start();
+                    B_StartCyclic.ForeColor = Color.Red;
+                    CB_CycFuncName.Enabled = false;
+                }
+            }
+            else
+            {
+                T_Cyclic.Stop();
+                B_StartCyclic.ForeColor = Color.Black;
+                CB_CycFuncName.Enabled = true;
+            }
+        }
+
+        private void Tab_Ctrl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (T_Cyclic.Enabled)
+            {
+                T_Cyclic.Stop();
+                B_StartCyclic.ForeColor = Color.Black;
+                CB_CycFuncName.Enabled = true;
+            }
+        }
+
+        private void T_Cyclic_Tick(object sender, EventArgs e)
+        {
+            if(serialPort1.IsOpen)
+            {
+                Int16[] send_values = new Int16[cyclic_funcs[cfn].tx.Length]; 
+                for (int i = 0; i < cyclic_funcs[cfn].tx.Length; i++)
+                {
+                    send_values[i] = cyclic_funcs[cfn].tx[i].value;
+                }
+                MD.sModbusRegs r_flame = MD.MyModbusCyclicFuncs(serialPort1, dev_id, cfn, send_values);
+                if (r_flame.status == 0)
+                {
+                    for (int i = 0; i<r_flame.data.Length; i++)
+                    {
+                        DGV_CyclicFuncRx.Rows[i].Cells[2].Value = r_flame.data[i].ToString();
+                        cyclic_funcs[cfn].rx[i].value = r_flame.data[i];
+                    }
+                }
+                else
+                {
+                    T_Cyclic.Stop();
+                    B_StartCyclic.ForeColor = Color.Black;
+                    CB_CycFuncName.Enabled = true;
+                    MessageBox.Show("Modbus Connection Error!!");
                 }
             }
         }
