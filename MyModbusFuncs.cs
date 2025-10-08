@@ -265,5 +265,40 @@ namespace MD
             }
             return modbus_data;
         }
+        //パラメータ書き込み
+        public sModbusRegs MyModbusParamFlash(SerialPort ser, byte slave)
+        {
+            byte[] sd = new byte[256];
+            int sl = 0;
+            sd[sl++] = slave;
+            sd[sl++] = (byte)(75);
+            sd[sl++] = 0;
+            sd[sl++] = 0;
+            UInt16 crc = SF.Calc_crc(sd, sl);
+            sd[sl++] = (byte)(crc);
+            sd[sl++] = (byte)(crc >> 8);
+            ser.Write(sd, 0, sl);
+            Thread.Sleep(1000);
+            //受信
+            sModbusRegs modbus_data = new sModbusRegs();
+            modbus_data.status = -1;
+            if (ser.BytesToRead > 0)
+            {
+                int rlen = ser.BytesToRead;
+                byte[] rd = new byte[rlen];
+                ser.Read(rd, 0, rlen);
+                UInt16 crc_check = SF.convert_UInt16(rd[rlen - 1], rd[rlen - 2]);
+                if (crc_check != SF.Calc_crc(rd, rlen - 2))
+                {
+                    modbus_data.status = -1;
+                    return modbus_data;
+                }
+                modbus_data.len = 1;
+                modbus_data.data = new Int16[modbus_data.len];
+                modbus_data.data[0] = SF.convert_Int16(rd[2], rd[3]);
+                modbus_data.status = 0;
+            }
+            return modbus_data;
+        }
     }
 }

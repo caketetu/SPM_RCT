@@ -476,6 +476,38 @@ namespace WindowsFormsApp1
             reload_holding_regs();
         }
 
+        private void B_FlashParams_Click(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2();
+            form2.Show();
+
+            DataClass.StringValue += "Flash Params…\r\n";
+            form2.RefreshData();
+            form2.Refresh();
+            String msg;
+
+            MD.sModbusRegs r_flame = MD.MyModbusParamFlash(serialPort1, dev_id);
+            if (r_flame.status == 0)
+            {
+                if (r_flame.data[0] == 1)
+                {
+                    msg = "Data Save OK!!\r\n";
+                }
+                else
+                {
+                    msg = "Data Save Error!!\r\n";
+                }
+            }
+            else
+            {
+                msg = "Connection Error!!\r\n";
+            }
+
+            DataClass.StringValue += msg;
+            form2.RefreshData();
+            form2.Refresh();
+        }
+
         private void B_LoadInputRegs_Click(object sender, EventArgs e)
         {
             Form2 form2 = new Form2();
