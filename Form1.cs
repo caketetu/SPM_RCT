@@ -322,30 +322,46 @@ namespace WindowsFormsApp1
 
         private void B_DevIDSerach_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
-            form2.Show();
-            if (serialPort1.IsOpen)
+            if (!serialPort1.IsOpen)
             {
-                for (int i=1; i<254; i++)
+                serialPort1.PortName = TB_Com.Text;
+                serialPort1.Open();
+                String msg = "Device Search ";
+                for (int i=0; i<254; i++)
                 {
                     MD.sModbusRegs r_flame = MD.MyModbusReadInputRegisters(
                         serialPort1, (byte)i, 0, 1);
                     if (r_flame.status == 0)
                     {
-                        DataClass.StringValue += "ID:" + i.ToString() + "...Detected!!\r\n";
+                        //DataClass.StringValue += "ID:" + i.ToString() + "...Detected!!\r\n";
+                        msg += " *"+i.ToString() + " ";
                     }
                     else
                     {
-                        DataClass.StringValue += "ID:" + i.ToString() + " ...\r\n";
+                        //DataClass.StringValue += "ID:" + i.ToString() + " ...\r\n";
+                        msg += i.ToString() + " ";
                     }
+
                     if (i == 254-1)
                     {
-                        DataClass.StringValue += "___end ID Search\r\n";
+                        //DataClass.StringValue += "___end ID Search\r\n";
+                        msg += "___end ID Search";
+                        LogOut2(msg);
                     }
-                    form2.RefreshData();
-                    form2.Refresh();
+
+                    if (i%16 == 0)
+                    {
+                        //DataClass.StringValue += "___end ID Search\r\n";
+                        LogOut2(msg);
+                        msg = "";
+                    }
                     Thread.Sleep(30);
                 }
+                serialPort1.Close();
+            }
+            else
+            {
+                MessageBox.Show("Please Close Connection");
             }
         }
 
@@ -409,10 +425,9 @@ namespace WindowsFormsApp1
 
         private void B_SaveHoldingRegs_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
-            form2.Show();
             for (int i=0; i<holding_regs.Length;i++)
             {
+                String msg;
                 MD.sModbusRegs r_flame = MD.MyModbusPresetSingleRegisters(
                                             serialPort1, dev_id, (UInt16)i, holding_regs[i].value);
 
@@ -420,70 +435,63 @@ namespace WindowsFormsApp1
                 {
                     holding_regs[i].value = r_flame.data[0];
                     holding_regs[i].rewrite = false;
-                    Thread.Sleep(30);
-                    DataClass.StringValue += "Write Holding Regs " + i.ToString()
-                                            + "  " + holding_regs[i].value.ToString() + "\r\n";
+                    //DataClass.StringValue += "Write Holding Regs " + i.ToString()
+                    //                        + "  " + holding_regs[i].value.ToString() + "\r\n";
+                    msg = "Write Holding Regs " + i.ToString()
+                          + "  " + holding_regs[i].value.ToString();
 
                     if (i == holding_regs.Length - 1)
                     {
-                        DataClass.StringValue += "___end Write Holding Registers\r\n";
+                        //DataClass.StringValue += "___end Write Holding Registers\r\n";
+                        msg = "___end Write Holding Registers";
                     }
-                    form2.RefreshData();
-                    form2.Refresh();
                 }
                 else
                 {
-                    DataClass.StringValue += "Write Holding Regs " + i.ToString() + " Error!!\r\n";
-                    form2.RefreshData();
-                    form2.Refresh();
+                    //DataClass.StringValue += "Write Holding Regs " + i.ToString() + " Error!!\r\n";
+                    msg = "Write Holding Regs " + i.ToString() + " Error!!";
                     break;
                 }
+                LogOut2(msg);
             }
             reload_holding_regs();
         }
 
         private void B_LoadHoldingRegs_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
-            form2.Show();
-            for (int i = 0; i < holding_regs.Length; i++)
+            LogOut2("Read Holding Regs");
+            int i = 0;
+            while (i < holding_regs.Length)
             {
+                int len = 0;
+                if ((i + 8) <= holding_regs.Length) len = 8;
+                else len = (i + 8) - holding_regs.Length;
                 MD.sModbusRegs r_flame = MD.MyModbusReadHoldingRegisters(
-                                            serialPort1, dev_id, (UInt16)i, 1);
-                if(r_flame.status == 0)
+                                            serialPort1, dev_id, (UInt16)i, (UInt16)len);
+                if (r_flame.status == 0)
                 {
-                    holding_regs[i].value = r_flame.data[0];
-                    holding_regs[i].rewrite = false;
-                    Thread.Sleep(30);
-                    DataClass.StringValue += "Read Holding Regs " + i.ToString()
-                                            + "  " + holding_regs[i].value.ToString() + "\r\n";
-
-                    if (i == holding_regs.Length - 1)
+                    String msg = "";
+                    for (int j = 0; j < r_flame.data.Length; j++)
                     {
-                        DataClass.StringValue += "___end Load Holding Registers\r\n";
+                        holding_regs[i + j].value = r_flame.data[j];
+                        holding_regs[i + j].rewrite = false;
+                        msg += (i + j).ToString() + "=" + holding_regs[i + j].value.ToString() + ",";
                     }
-                    form2.RefreshData();
-                    form2.Refresh();
+                    LogOut2(msg);
                 }
                 else
                 {
-                    DataClass.StringValue += "Read Holding Regs " + i.ToString() + " Error!!\r\n";
-                    form2.RefreshData();
-                    form2.Refresh();
+                    LogOut2("Read Holding Regs " + i.ToString() + " Error!!");
                     break;
                 }
+                i += 8;
             }
             reload_holding_regs();
         }
 
         private void B_FlashParams_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
-            form2.Show();
-
-            DataClass.StringValue += "Flash Params…\r\n";
-            form2.RefreshData();
-            form2.Refresh();
+            LogOut2("Flash Params…");
             String msg;
 
             MD.sModbusRegs r_flame = MD.MyModbusParamFlash(serialPort1, dev_id);
@@ -503,41 +511,37 @@ namespace WindowsFormsApp1
                 msg = "Connection Error!!\r\n";
             }
 
-            DataClass.StringValue += msg;
-            form2.RefreshData();
-            form2.Refresh();
+            LogOut2(msg);
         }
 
         private void B_LoadInputRegs_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
-            form2.Show();
-            for (int i = 0; i < input_regs.Length; i++)
+            LogOut2("Read Input Regs");
+            int i = 0;
+            while(i< input_regs.Length)
             {
+                int len = 0;
+                if ((i + 8) <= input_regs.Length) len = 8;
+                else len = (i+8) - input_regs.Length;
                 MD.sModbusRegs r_flame = MD.MyModbusReadInputRegisters(
-                                            serialPort1, dev_id, (UInt16)i, 1);
+                                            serialPort1, dev_id, (UInt16)i, (UInt16)len);
                 if (r_flame.status == 0)
                 {
-                    input_regs[i].value = r_flame.data[0];
-                    input_regs[i].rewrite = false;
-                    Thread.Sleep(30);
-                    DataClass.StringValue += "Read Input Regs " + i.ToString()
-                                            + "  " + input_regs[i].value.ToString() + "\r\n";
-
-                    if (i == input_regs.Length - 1)
+                    String msg = "";
+                    for(int j=0; j<r_flame.data.Length; j++)
                     {
-                        DataClass.StringValue += "___end Load Input Registers\r\n";
+                        input_regs[i + j].value = r_flame.data[j];
+                        input_regs[i + j].rewrite = false;
+                        msg += (i + j).ToString() + "=" + input_regs[i + j].value.ToString() + ",";
                     }
-                    form2.RefreshData();
-                    form2.Refresh();
+                    LogOut2 (msg);
                 }
                 else
                 {
-                    DataClass.StringValue += "Read Input Regs " + i.ToString() + " Error!!\r\n";
-                    form2.RefreshData();
-                    form2.Refresh();
+                    LogOut2("Read Input Regs " + i.ToString() + " Error!!");
                     break;
                 }
+                i += 8;
             }
             reload_input_regs();
         }
@@ -568,6 +572,7 @@ namespace WindowsFormsApp1
                 }
             }
 
+            CoB_TrackbarIndex.Items.Clear();
             DGV_CyclicFuncTx.Rows.Clear();
             DGV_CyclicFuncTx.Columns.Clear();
             DGV_CyclicFuncTx.ColumnCount = 4;
@@ -576,7 +581,20 @@ namespace WindowsFormsApp1
                 if (r.name != null)
                 {
                     DGV_CyclicFuncTx.Rows.Add(r.address, r.name, r.value, 0);
+                    CoB_TrackbarIndex.Items.Add(r.name);
                 }
+            }
+            CoB_TrackbarIndex.SelectedIndex = 0;
+        }
+
+        private void CoB_TrackbarIndex_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            int idx = CoB_TrackbarIndex.SelectedIndex;
+            if (idx > 0)
+            {
+                TrB_Value.Maximum = cyclic_funcs[cfn].tx[idx].max;
+                TrB_Value.Minimum = cyclic_funcs[cfn].tx[idx].min;
+                TrB_Value.Value = cyclic_funcs[cfn].tx[idx].value;
             }
         }
 
@@ -625,11 +643,25 @@ namespace WindowsFormsApp1
         {
             if(serialPort1.IsOpen)
             {
-                Int16[] send_values = new Int16[cyclic_funcs[cfn].tx.Length]; 
+                String msg = cyclic_funcs[cfn].name + " Tx=";
+
+                if (CB_TrackbarAttach.Checked)
+                {
+                    //String s = DGV_CyclicFuncTx.Rows[i].Cells[3].Value.ToString();
+                    int idx = CoB_TrackbarIndex.SelectedIndex;
+                    String s = TrB_Value.Value.ToString();
+                    Int16 val = Convert.ToInt16(s);
+                    DGV_CyclicFuncTx.Rows[idx].Cells[2].Value = s;
+                    cyclic_funcs[cfn].tx[idx].value = val;
+                }
+
+                Int16[] send_values = new Int16[cyclic_funcs[cfn].tx.Length];
                 for (int i = 0; i < cyclic_funcs[cfn].tx.Length; i++)
                 {
                     send_values[i] = cyclic_funcs[cfn].tx[i].value;
+                    msg += cyclic_funcs[cfn].tx[i].value.ToString() + ',';
                 }
+                msg += " Rx=";
                 MD.sModbusRegs r_flame = MD.MyModbusCyclicFuncs(serialPort1, dev_id, cfn, send_values);
                 if (r_flame.status == 0)
                 {
@@ -637,16 +669,39 @@ namespace WindowsFormsApp1
                     {
                         DGV_CyclicFuncRx.Rows[i].Cells[2].Value = r_flame.data[i].ToString();
                         cyclic_funcs[cfn].rx[i].value = r_flame.data[i];
+                        msg += cyclic_funcs[cfn].rx[i].value.ToString() + ',';
                     }
+                    LogOut2(msg);
                 }
                 else
                 {
                     T_Cyclic.Stop();
                     B_StartCyclic.ForeColor = Color.Black;
                     CB_CycFuncName.Enabled = true;
+                    LogOut2(msg+ "Modbus Connection Error!!");
                     MessageBox.Show("Modbus Connection Error!!");
                 }
             }
+        }
+
+        private void LogOut2(string message)
+        {
+            if (RTB_Log.InvokeRequired)
+            {
+                // UIスレッドに委譲
+                RTB_Log.BeginInvoke(new Action<string>(LogOut2), message);
+                return;
+            }
+
+            // ログ追加
+            RTB_Log.AppendText(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff") + ":  " + message + Environment.NewLine);
+
+            // キャレットを末尾に移動
+            RTB_Log.SelectionStart = RTB_Log.Text.Length;
+            RTB_Log.SelectionLength = 0;
+
+            // スクロールを末尾へ
+            RTB_Log.ScrollToCaret();
         }
     }
 }

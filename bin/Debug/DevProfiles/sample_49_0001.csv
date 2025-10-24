@@ -75,10 +75,10 @@ _holding_regs,,,,
 cyclic1,cyclic_function_test1,3,3,
 0,mode#,0,1,tx
 1,duty#,0,1023,tx
-2,interval#,10,1000,tx
+2,interval#,0,1000,tx
 0,mode#,0,1,rx
 1,duty#,0,1023,rx
-2,interval#,10,1000,rx
+2,interval#,0,1000,rx
 _cyclic1,,,,
 cyclic2,cyclic_function_test5,8,8,
 0,pattern0#,0,1023,tx

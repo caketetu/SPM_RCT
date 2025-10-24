@@ -62,7 +62,10 @@
             this.DGV_CyclicFuncTx = new System.Windows.Forms.DataGridView();
             this.DGV_CyclicFuncRx = new System.Windows.Forms.DataGridView();
             this.T_Cyclic = new System.Windows.Forms.Timer(this.components);
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.RTB_Log = new System.Windows.Forms.RichTextBox();
+            this.CoB_TrackbarIndex = new System.Windows.Forms.ComboBox();
+            this.TrB_Value = new System.Windows.Forms.TrackBar();
+            this.CB_TrackbarAttach = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_InputRegs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_HoldingRegs)).BeginInit();
             this.Tab_Ctrl.SuspendLayout();
@@ -70,6 +73,7 @@
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_CyclicFuncTx)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_CyclicFuncRx)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TrB_Value)).BeginInit();
             this.SuspendLayout();
             // 
             // B_Serial
@@ -162,7 +166,7 @@
             this.DGV_InputRegs.Location = new System.Drawing.Point(8, 28);
             this.DGV_InputRegs.Name = "DGV_InputRegs";
             this.DGV_InputRegs.RowTemplate.Height = 21;
-            this.DGV_InputRegs.Size = new System.Drawing.Size(378, 653);
+            this.DGV_InputRegs.Size = new System.Drawing.Size(378, 553);
             this.DGV_InputRegs.TabIndex = 11;
             // 
             // DGV_HoldingRegs
@@ -171,14 +175,14 @@
             this.DGV_HoldingRegs.Location = new System.Drawing.Point(412, 28);
             this.DGV_HoldingRegs.Name = "DGV_HoldingRegs";
             this.DGV_HoldingRegs.RowTemplate.Height = 21;
-            this.DGV_HoldingRegs.Size = new System.Drawing.Size(471, 651);
+            this.DGV_HoldingRegs.Size = new System.Drawing.Size(471, 553);
             this.DGV_HoldingRegs.TabIndex = 12;
             this.DGV_HoldingRegs.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_HoldingRegs_CellContentClick);
             this.DGV_HoldingRegs.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_HoldingRegs_CellValueChanged);
             // 
             // B_AllWriteHoldingRegs
             // 
-            this.B_AllWriteHoldingRegs.Location = new System.Drawing.Point(502, 685);
+            this.B_AllWriteHoldingRegs.Location = new System.Drawing.Point(502, 587);
             this.B_AllWriteHoldingRegs.Name = "B_AllWriteHoldingRegs";
             this.B_AllWriteHoldingRegs.Size = new System.Drawing.Size(84, 28);
             this.B_AllWriteHoldingRegs.TabIndex = 14;
@@ -188,7 +192,7 @@
             // 
             // B_LoadHoldingRegs
             // 
-            this.B_LoadHoldingRegs.Location = new System.Drawing.Point(412, 685);
+            this.B_LoadHoldingRegs.Location = new System.Drawing.Point(412, 587);
             this.B_LoadHoldingRegs.Name = "B_LoadHoldingRegs";
             this.B_LoadHoldingRegs.Size = new System.Drawing.Size(84, 28);
             this.B_LoadHoldingRegs.TabIndex = 15;
@@ -198,7 +202,7 @@
             // 
             // B_LoadInputRegs
             // 
-            this.B_LoadInputRegs.Location = new System.Drawing.Point(302, 685);
+            this.B_LoadInputRegs.Location = new System.Drawing.Point(302, 587);
             this.B_LoadInputRegs.Name = "B_LoadInputRegs";
             this.B_LoadInputRegs.Size = new System.Drawing.Size(84, 28);
             this.B_LoadInputRegs.TabIndex = 16;
@@ -226,7 +230,7 @@
             // 
             // B_FlashParams
             // 
-            this.B_FlashParams.Location = new System.Drawing.Point(799, 685);
+            this.B_FlashParams.Location = new System.Drawing.Point(799, 587);
             this.B_FlashParams.Name = "B_FlashParams";
             this.B_FlashParams.Size = new System.Drawing.Size(84, 28);
             this.B_FlashParams.TabIndex = 19;
@@ -236,7 +240,7 @@
             // 
             // B_SaveParams
             // 
-            this.B_SaveParams.Location = new System.Drawing.Point(709, 685);
+            this.B_SaveParams.Location = new System.Drawing.Point(709, 587);
             this.B_SaveParams.Name = "B_SaveParams";
             this.B_SaveParams.Size = new System.Drawing.Size(84, 28);
             this.B_SaveParams.TabIndex = 20;
@@ -246,7 +250,7 @@
             // 
             // B_LoadParams
             // 
-            this.B_LoadParams.Location = new System.Drawing.Point(619, 685);
+            this.B_LoadParams.Location = new System.Drawing.Point(619, 587);
             this.B_LoadParams.Name = "B_LoadParams";
             this.B_LoadParams.Size = new System.Drawing.Size(84, 28);
             this.B_LoadParams.TabIndex = 21;
@@ -287,10 +291,10 @@
             this.Tab_Ctrl.Controls.Add(this.tabPage1);
             this.Tab_Ctrl.Controls.Add(this.tabPage2);
             this.Tab_Ctrl.Enabled = false;
-            this.Tab_Ctrl.Location = new System.Drawing.Point(12, 12);
+            this.Tab_Ctrl.Location = new System.Drawing.Point(2, 3);
             this.Tab_Ctrl.Name = "Tab_Ctrl";
             this.Tab_Ctrl.SelectedIndex = 0;
-            this.Tab_Ctrl.Size = new System.Drawing.Size(1015, 763);
+            this.Tab_Ctrl.Size = new System.Drawing.Size(1025, 656);
             this.Tab_Ctrl.TabIndex = 25;
             this.Tab_Ctrl.SelectedIndexChanged += new System.EventHandler(this.Tab_Ctrl_SelectedIndexChanged);
             // 
@@ -309,13 +313,16 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1007, 737);
+            this.tabPage1.Size = new System.Drawing.Size(1017, 630);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "All Registers";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.CB_TrackbarAttach);
+            this.tabPage2.Controls.Add(this.TrB_Value);
+            this.tabPage2.Controls.Add(this.CoB_TrackbarIndex);
             this.tabPage2.Controls.Add(this.B_StartCyclic);
             this.tabPage2.Controls.Add(this.B_CyclicTxWrite);
             this.tabPage2.Controls.Add(this.CB_CycFuncName);
@@ -324,7 +331,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1007, 737);
+            this.tabPage2.Size = new System.Drawing.Size(1017, 630);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Cyclic Function";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -380,20 +387,46 @@
             // 
             this.T_Cyclic.Tick += new System.EventHandler(this.T_Cyclic_Tick);
             // 
-            // richTextBox1
+            // RTB_Log
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(1029, 284);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(149, 465);
-            this.richTextBox1.TabIndex = 26;
-            this.richTextBox1.Text = "";
+            this.RTB_Log.Location = new System.Drawing.Point(6, 661);
+            this.RTB_Log.Name = "RTB_Log";
+            this.RTB_Log.Size = new System.Drawing.Size(1017, 96);
+            this.RTB_Log.TabIndex = 26;
+            this.RTB_Log.Text = "";
+            // 
+            // CoB_TrackbarIndex
+            // 
+            this.CoB_TrackbarIndex.FormattingEnabled = true;
+            this.CoB_TrackbarIndex.Location = new System.Drawing.Point(26, 486);
+            this.CoB_TrackbarIndex.Name = "CoB_TrackbarIndex";
+            this.CoB_TrackbarIndex.Size = new System.Drawing.Size(121, 20);
+            this.CoB_TrackbarIndex.TabIndex = 5;
+            this.CoB_TrackbarIndex.SelectionChangeCommitted += new System.EventHandler(this.CoB_TrackbarIndex_SelectionChangeCommitted);
+            // 
+            // TrB_Value
+            // 
+            this.TrB_Value.Location = new System.Drawing.Point(26, 512);
+            this.TrB_Value.Name = "TrB_Value";
+            this.TrB_Value.Size = new System.Drawing.Size(740, 45);
+            this.TrB_Value.TabIndex = 6;
+            // 
+            // CB_TrackbarAttach
+            // 
+            this.CB_TrackbarAttach.AutoSize = true;
+            this.CB_TrackbarAttach.Location = new System.Drawing.Point(153, 490);
+            this.CB_TrackbarAttach.Name = "CB_TrackbarAttach";
+            this.CB_TrackbarAttach.Size = new System.Drawing.Size(80, 16);
+            this.CB_TrackbarAttach.TabIndex = 7;
+            this.CB_TrackbarAttach.Text = "checkBox1";
+            this.CB_TrackbarAttach.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 761);
-            this.Controls.Add(this.richTextBox1);
+            this.ClientSize = new System.Drawing.Size(1192, 769);
+            this.Controls.Add(this.RTB_Log);
             this.Controls.Add(this.Tab_Ctrl);
             this.Controls.Add(this.L_Description);
             this.Controls.Add(this.labelee);
@@ -415,8 +448,10 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_CyclicFuncTx)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_CyclicFuncRx)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TrB_Value)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -457,7 +492,10 @@
         private System.Windows.Forms.Button B_CyclicTxWrite;
         private System.Windows.Forms.Button B_StartCyclic;
         private System.Windows.Forms.Timer T_Cyclic;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox RTB_Log;
+        private System.Windows.Forms.CheckBox CB_TrackbarAttach;
+        private System.Windows.Forms.TrackBar TrB_Value;
+        private System.Windows.Forms.ComboBox CoB_TrackbarIndex;
     }
 }
 
