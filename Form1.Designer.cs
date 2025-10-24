@@ -56,6 +56,9 @@
             this.Tab_Ctrl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.CB_TrackbarAttach = new System.Windows.Forms.CheckBox();
+            this.TrB_Value = new System.Windows.Forms.TrackBar();
+            this.CoB_TrackbarIndex = new System.Windows.Forms.ComboBox();
             this.B_StartCyclic = new System.Windows.Forms.Button();
             this.B_CyclicTxWrite = new System.Windows.Forms.Button();
             this.CB_CycFuncName = new System.Windows.Forms.ComboBox();
@@ -63,17 +66,16 @@
             this.DGV_CyclicFuncRx = new System.Windows.Forms.DataGridView();
             this.T_Cyclic = new System.Windows.Forms.Timer(this.components);
             this.RTB_Log = new System.Windows.Forms.RichTextBox();
-            this.CoB_TrackbarIndex = new System.Windows.Forms.ComboBox();
-            this.TrB_Value = new System.Windows.Forms.TrackBar();
-            this.CB_TrackbarAttach = new System.Windows.Forms.CheckBox();
+            this.L_TrbMin = new System.Windows.Forms.Label();
+            this.L_TrbMax = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_InputRegs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_HoldingRegs)).BeginInit();
             this.Tab_Ctrl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TrB_Value)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_CyclicFuncTx)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_CyclicFuncRx)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TrB_Value)).BeginInit();
             this.SuspendLayout();
             // 
             // B_Serial
@@ -320,6 +322,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.L_TrbMax);
+            this.tabPage2.Controls.Add(this.L_TrbMin);
             this.tabPage2.Controls.Add(this.CB_TrackbarAttach);
             this.tabPage2.Controls.Add(this.TrB_Value);
             this.tabPage2.Controls.Add(this.CoB_TrackbarIndex);
@@ -335,6 +339,33 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Cyclic Function";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // CB_TrackbarAttach
+            // 
+            this.CB_TrackbarAttach.AutoSize = true;
+            this.CB_TrackbarAttach.Location = new System.Drawing.Point(153, 490);
+            this.CB_TrackbarAttach.Name = "CB_TrackbarAttach";
+            this.CB_TrackbarAttach.Size = new System.Drawing.Size(58, 16);
+            this.CB_TrackbarAttach.TabIndex = 7;
+            this.CB_TrackbarAttach.Text = "Attach";
+            this.CB_TrackbarAttach.UseVisualStyleBackColor = true;
+            this.CB_TrackbarAttach.CheckedChanged += new System.EventHandler(this.CB_TrackbarAttach_CheckedChanged);
+            // 
+            // TrB_Value
+            // 
+            this.TrB_Value.Location = new System.Drawing.Point(26, 512);
+            this.TrB_Value.Name = "TrB_Value";
+            this.TrB_Value.Size = new System.Drawing.Size(740, 45);
+            this.TrB_Value.TabIndex = 6;
+            // 
+            // CoB_TrackbarIndex
+            // 
+            this.CoB_TrackbarIndex.FormattingEnabled = true;
+            this.CoB_TrackbarIndex.Location = new System.Drawing.Point(26, 486);
+            this.CoB_TrackbarIndex.Name = "CoB_TrackbarIndex";
+            this.CoB_TrackbarIndex.Size = new System.Drawing.Size(121, 20);
+            this.CoB_TrackbarIndex.TabIndex = 5;
+            this.CoB_TrackbarIndex.SelectionChangeCommitted += new System.EventHandler(this.CoB_TrackbarIndex_SelectionChangeCommitted);
             // 
             // B_StartCyclic
             // 
@@ -395,31 +426,23 @@
             this.RTB_Log.TabIndex = 26;
             this.RTB_Log.Text = "";
             // 
-            // CoB_TrackbarIndex
+            // L_TrbMin
             // 
-            this.CoB_TrackbarIndex.FormattingEnabled = true;
-            this.CoB_TrackbarIndex.Location = new System.Drawing.Point(26, 486);
-            this.CoB_TrackbarIndex.Name = "CoB_TrackbarIndex";
-            this.CoB_TrackbarIndex.Size = new System.Drawing.Size(121, 20);
-            this.CoB_TrackbarIndex.TabIndex = 5;
-            this.CoB_TrackbarIndex.SelectionChangeCommitted += new System.EventHandler(this.CoB_TrackbarIndex_SelectionChangeCommitted);
+            this.L_TrbMin.AutoSize = true;
+            this.L_TrbMin.Location = new System.Drawing.Point(24, 560);
+            this.L_TrbMin.Name = "L_TrbMin";
+            this.L_TrbMin.Size = new System.Drawing.Size(23, 12);
+            this.L_TrbMin.TabIndex = 8;
+            this.L_TrbMin.Text = "000";
             // 
-            // TrB_Value
+            // L_TrbMax
             // 
-            this.TrB_Value.Location = new System.Drawing.Point(26, 512);
-            this.TrB_Value.Name = "TrB_Value";
-            this.TrB_Value.Size = new System.Drawing.Size(740, 45);
-            this.TrB_Value.TabIndex = 6;
-            // 
-            // CB_TrackbarAttach
-            // 
-            this.CB_TrackbarAttach.AutoSize = true;
-            this.CB_TrackbarAttach.Location = new System.Drawing.Point(153, 490);
-            this.CB_TrackbarAttach.Name = "CB_TrackbarAttach";
-            this.CB_TrackbarAttach.Size = new System.Drawing.Size(80, 16);
-            this.CB_TrackbarAttach.TabIndex = 7;
-            this.CB_TrackbarAttach.Text = "checkBox1";
-            this.CB_TrackbarAttach.UseVisualStyleBackColor = true;
+            this.L_TrbMax.AutoSize = true;
+            this.L_TrbMax.Location = new System.Drawing.Point(731, 560);
+            this.L_TrbMax.Name = "L_TrbMax";
+            this.L_TrbMax.Size = new System.Drawing.Size(23, 12);
+            this.L_TrbMax.TabIndex = 9;
+            this.L_TrbMax.Text = "000";
             // 
             // Form1
             // 
@@ -440,7 +463,7 @@
             this.Controls.Add(this.TB_Com);
             this.Controls.Add(this.B_Serial);
             this.Name = "Form1";
-            this.Text = "SPM Register Custom Tool";
+            this.Text = "Simple Programable Module Register Configuration Tool";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.DGV_InputRegs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_HoldingRegs)).EndInit();
@@ -449,9 +472,9 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TrB_Value)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_CyclicFuncTx)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_CyclicFuncRx)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TrB_Value)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -496,6 +519,8 @@
         private System.Windows.Forms.CheckBox CB_TrackbarAttach;
         private System.Windows.Forms.TrackBar TrB_Value;
         private System.Windows.Forms.ComboBox CoB_TrackbarIndex;
+        private System.Windows.Forms.Label L_TrbMax;
+        private System.Windows.Forms.Label L_TrbMin;
     }
 }
 

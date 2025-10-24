@@ -97,7 +97,15 @@ namespace WindowsFormsApp1
             {
                 //Close->Open処理
                 serialPort1.PortName = TB_Com.Text;
-                serialPort1.Open();
+                try
+                {
+                    serialPort1.Open();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
                 //デバイス情報の読み出し
                 if (serialPort1.IsOpen)
                 {
@@ -140,10 +148,6 @@ namespace WindowsFormsApp1
                         return;
                     }
                     B_Serial.ForeColor = Color.Red;
-                }
-                else
-                {
-                    MessageBox.Show("serial Port Error!!");
                 }
             }
         }
@@ -373,6 +377,12 @@ namespace WindowsFormsApp1
                 if (holding_regs == null) return;
                 using (StreamWriter writer = new StreamWriter(saveFileDialog1.FileName, false, Encoding.UTF8))
                 {
+                    //モデルナンバー
+                    writer.WriteLine("model_no," + L_ModelNo.Text);
+                    //バージョン＋サブバージョン
+                    writer.WriteLine("version," + L_DevVersion.Text);
+                    //保存日時
+                    writer.WriteLine("save_date," + DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss"));
                     writer.WriteLine("holding_regs");
                     foreach (sRegister r in holding_regs)
                     {
@@ -414,6 +424,25 @@ namespace WindowsFormsApp1
                                 {
                                     holding_regs[addr].value = val;
                                     holding_regs[addr].rewrite = true;
+                                }
+                            }
+                        }else if (sline[0] == "model_no")
+                        {
+                            if (sline[1] != L_ModelNo.Text)
+                            {
+                                MessageBox.Show("The model number is different.");
+                                return;
+                            }
+                        }else if(sline[0] == "version"){
+                            if (sline[1] != L_DevVersion.Text)
+                            {
+                                DialogResult result = MessageBox.Show("A different version. Do you want to load it?", "Caution",
+                                    MessageBoxButtons.OKCancel,
+                                    MessageBoxIcon.Exclamation,
+                                    MessageBoxDefaultButton.Button2);
+                                if (result == DialogResult.Cancel)
+                                {
+                                    return;
                                 }
                             }
                         }
@@ -585,6 +614,11 @@ namespace WindowsFormsApp1
                 }
             }
             CoB_TrackbarIndex.SelectedIndex = 0;
+            TrB_Value.Maximum = cyclic_funcs[cfn].tx[0].max;
+            TrB_Value.Minimum = cyclic_funcs[cfn].tx[0].min;
+            TrB_Value.Value = cyclic_funcs[cfn].tx[0].value;
+            L_TrbMax.Text = TrB_Value.Maximum.ToString();
+            L_TrbMin.Text = TrB_Value.Minimum.ToString();
         }
 
         private void CoB_TrackbarIndex_SelectionChangeCommitted(object sender, EventArgs e)
@@ -595,6 +629,21 @@ namespace WindowsFormsApp1
                 TrB_Value.Maximum = cyclic_funcs[cfn].tx[idx].max;
                 TrB_Value.Minimum = cyclic_funcs[cfn].tx[idx].min;
                 TrB_Value.Value = cyclic_funcs[cfn].tx[idx].value;
+                L_TrbMax.Text = TrB_Value.Maximum.ToString();
+                L_TrbMin.Text = TrB_Value.Minimum.ToString();
+            }
+        }
+
+        
+        private void CB_TrackbarAttach_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CB_TrackbarAttach.Checked)
+            {
+                CoB_TrackbarIndex.Enabled = false;
+            }
+            else
+            {
+                CoB_TrackbarIndex.Enabled = true;
             }
         }
 
@@ -626,6 +675,7 @@ namespace WindowsFormsApp1
                 T_Cyclic.Stop();
                 B_StartCyclic.ForeColor = Color.Black;
                 CB_CycFuncName.Enabled = true;
+                CB_TrackbarAttach.Enabled = false;
             }
         }
 
